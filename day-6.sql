@@ -349,25 +349,10 @@ ALTER TABLE Flights RENAME COLUMN Arrival_Airport TO Destination_Airport;
 -- Add a Default Value for Seats_Available
 ALTER TABLE Flights ALTER COLUMN Seats_Available SET DEFAULT 100;
 
- -- Rename the Flights Table
+-- Rename the Flights Table
 ALTER TABLE Flights RENAME TO Flight_Schedules;
 
- /*
-Naming Conventions:
-
-If you are creating constraints, it's a good practice to use a consistent naming convention. 
-This can help you easily identify constraints later. A common convention is to use the format:
-
-For CHECK constraints: chk_<table>_<column>
-For UNIQUE constraints: unique_<table>_<column>
-For FOREIGN KEY constraints: fk_<table>_<referenced_table>
-
-Example of Adding Constraints with Naming Conventions
-
-ALTER TABLE Flights 
-ADD CONSTRAINT chk_flight_duration CHECK (Flight_Duration > 0);
-*/
-
+ 
  -- 5. Add & drop Constraints Queries 
  
  -- Add a CHECK constraint to ensure Flight_Duration is positive
@@ -403,8 +388,7 @@ ALTER TABLE Flights DROP CONSTRAINT fk_airport;
 ALTER TABLE Flights MODIFY Flight_Number VARCHAR(10) NOT NULL;
 
 -- Drop the NOT NULL Constraint from Flight_Number
-ALTER TABLE Flights
-MODIFY COLUMN Flight_Number varchar(10) NULL;
+ALTER TABLE Flights MODIFY Flight_Number VARCHAR(10);
 
 -- Add a DEFAULT Constraint for Status
 ALTER TABLE Flights ALTER COLUMN Status SET DEFAULT 'On Time';
@@ -432,6 +416,23 @@ to find constraint names.
 SELECT CONSTRAINT_NAME, TABLE_NAME, CONSTRAINT_TYPE
 FROM information_schema.TABLE_CONSTRAINTS
 WHERE TABLE_NAME = 'Flights';
+
+/*
+Naming Conventions:
+
+If you are creating constraints, it's a good practice to use a consistent naming convention. 
+This can help you easily identify constraints later. A common convention is to use the format:
+
+For CHECK constraints: chk_<table>_<column>
+For UNIQUE constraints: unique_<table>_<column>
+For FOREIGN KEY constraints: fk_<table>_<referenced_table>
+
+Example of Adding Constraints with Naming Conventions
+
+ALTER TABLE Flights 
+ADD CONSTRAINT chk_flight_duration CHECK (Flight_Duration > 0);
+*/
+
 
 
 SELECT 
@@ -755,7 +756,6 @@ AND Arrival_Airport = 'Mumbai (BOM)'
 AND Status = 'On Time' 
 AND Seats_Available > 0;
 
-
 -- Find flights that either depart from Delhi or arrive in Delhi.
 SELECT * FROM Flights 
 WHERE Departure_Airport = 'Delhi (DEL)' 
@@ -965,7 +965,6 @@ SET SQL_SAFE_UPDATES = 0;
 
 SET SQL_SAFE_UPDATES = 1;  -- Re-enable safe updates
 
-
 -- Remove Permission
 UPDATE users SET permissions = permissions & ~1 WHERE username = 'Bob';
 
@@ -979,7 +978,7 @@ SELECT COUNT(*) AS user_count FROM users WHERE (permissions & 1) = 1;
 SELECT * FROM users WHERE permissions = 0;
 
 -- List Users with All Permissions
-SELECT * FROM users WHERE permissions = 15;  -- 15 = 1111 in binary
+SELECT * FROM users WHERE permissions = 15;  -- 15 = 1111 in binary 
 
 -- Get Permissions as Binary String
 SELECT username, BIN(permissions) AS permissions_binary FROM users;
@@ -1025,7 +1024,7 @@ SELECT column1, column2
 FROM table_name  
 WHERE condition;  
  */
- 
+
  -- Select flights that are delayed
  SELECT * FROM Flights WHERE Status = 'Delayed';
  
